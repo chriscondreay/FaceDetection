@@ -10,6 +10,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "browserslist": [
+    "last 1 Chrome version"
+  ],
   "devDependencies": {
     "parcel": "^2.9.3"
   }
