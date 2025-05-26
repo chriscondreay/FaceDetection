@@ -1,0 +1,24 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.wrapper {
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  display: grid;
+  position: relative;
+}
+
+.wrapper > * {
+  grid-area: 1 / 1;
+}
+
+.face-detection {
+  position: absolute;
+}
+/*# sourceMappingURL=face.07c44145.css.map */
