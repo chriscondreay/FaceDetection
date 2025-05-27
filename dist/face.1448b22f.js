@@ -4,10 +4,17 @@ const ctx = canvas.getContext('2d');
 const faceCanvas = document.querySelector('.face-detection');
 const faceCtx = faceCanvas.getContext('2d');
 const faceDetectorAPI = window.faceapi;
-const options = {
-    SIZE: 9,
-    SCALE: 1
+const controlInputs = document.querySelectorAll('.controls input[type="range"]');
+console.log(controlInputs);
+const controls = {
+    SIZE: 10,
+    SCALE: 1.35
 };
+function handleControls(e) {
+    const { value, name } = e.currentTarget;
+    controls[name] = parseFloat(value);
+}
+controlInputs.forEach((input)=>input.addEventListener('input', handleControls));
 async function startWebcam() {
     const stream = await navigator.mediaDevices.getUserMedia({
         video: {
@@ -42,7 +49,7 @@ async function detect() {
 async function detectAndDrawFace(face) {
     const { width, height, x, y } = face.box;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = '#00ff00';
+    ctx.strokeStyle = 'none';
     ctx.lineWidth = 2;
     ctx.strokeRect(x, y, width, height);
 }
@@ -51,10 +58,10 @@ async function censorFace({ box: face }) {
     faceCtx.clearRect(0, 0, faceCanvas.width, faceCanvas.height);
     faceCtx.drawImage(// 5 source args
     video, face.x, face.y, face.width, face.width, // 4 draw args
-    face.x, face.y, SIZE, SIZE);
-    const width = face.width * SCALE;
-    const height = face.height * SCALE;
-    faceCtx.drawImage(faceCanvas, face.x, face.y, SIZE, SIZE, face.x - (width - face.width) / 2, face.y - (height - face.height) / 2.5, width, height);
+    face.x, face.y, controls.SIZE, controls.SIZE);
+    const width = face.width * controls.SCALE;
+    const height = face.height * controls.SCALE;
+    faceCtx.drawImage(faceCanvas, face.x, face.y, controls.SIZE, controls.SIZE, face.x - (width - face.width) / 2, face.y - (height - face.height) / 2.5, width, height);
 }
 startWebcam().then(detect);
 console.log(faceDetectorAPI);
